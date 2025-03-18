@@ -6,7 +6,8 @@ export const metadata = {
   title: "Page Not Found"
 };
 
-export default function NotFoundPage() {
+const NotFoundPage = () => {
+
   return (
     <Layout>
       <div className="flex flex-col items-center mt-20">
@@ -30,3 +31,5 @@ export default function NotFoundPage() {
     </Layout>
   )
 }
+
+export default NotFoundPage;

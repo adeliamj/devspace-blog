@@ -5,7 +5,7 @@ export const metadata = {
     title: "About DevSpace"
   };
 
-export default function AboutPage() {
+  const AboutPage = () => {
     return (
         <Layout>
             <h1 className='text-5xl border-b-4 pb-5 font-bold'>
@@ -28,3 +28,4 @@ export default function AboutPage() {
         </Layout>
     )
 }
+export default AboutPage
