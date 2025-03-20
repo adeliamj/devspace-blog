@@ -1,29 +1,25 @@
-"use client"; 
+"use client";
 
 import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
+import SearchResults from '@/components/SearchResults';
 
 const Search: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
-  const [searchResult, setSearchResult] = useState<string[]>([]);
+  const [searchResult, setSearchResult] = useState<{ slug: string; frontmatter: { title: string; excerpt: string } }[]>([]);
 
   useEffect(() => {
-    const getResults = async () => {
-      if (searchTerm === '') {
-        setSearchResult([]);
-      } else {
-        try {
-          const res = await fetch(`/api/search?q=${searchTerm}`);
-          const { results } = await res.json();
-          setSearchResult(results);
-        } catch (error) {
-          console.error("Error fetching search results:", error);
-        }
-      }
-    };
-
-    getResults();
-  }, [searchTerm]); // Menjalankan efek hanya ketika `searchTerm` berubah
+      const getResults = async () => {
+          if (searchTerm === '') {
+              setSearchResult([]);
+          } else {
+              const res = await fetch(`/api/search?q=${searchTerm}`);
+              const { results } = await res.json();
+              setSearchResult(results);
+          }
+      };
+      getResults();
+  }, [searchTerm]);
 
   return (
     <div className='relative bg-gray-600 p-4'>
@@ -43,6 +39,7 @@ const Search: React.FC = () => {
           </form>
         </div>
       </div>
+      <SearchResults results={searchResult} />
     </div>
   );
 };
