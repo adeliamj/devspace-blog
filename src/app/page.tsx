@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Layout from "@/components/Layout";
 import Post from "@/components/Post";
 import { getPosts as fetchPosts } from "@/lib/posts";
 
@@ -11,7 +10,7 @@ const HomePage = async () => {
   const posts = await getPosts();
 
   return (
-    <Layout>
+    <div>
       <h1 className="text-5xl border-b-4 p-5 font-bold">Latest Post</h1>
       <div className="grid md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post, index) => (
@@ -24,7 +23,7 @@ const HomePage = async () => {
       >
         All Post
       </Link>
-    </Layout>
+    </div>
   );
 };
 

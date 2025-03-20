@@ -3,7 +3,6 @@ import path from 'path';
 import Link from 'next/link';
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import Layout from "@/components/Layout";
 import CategoryLabel from "@/components/CategoryLabel";
 
 export const metadata = {
@@ -29,14 +28,14 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
 
   if (!post) {
     return (
-      <Layout>
+      <div>
         <h1>Post not found</h1>
-      </Layout>
+      </div>
     );
   }
 
   return (
-    <Layout>
+    <div>
       <Link href='/blog'>Go Back</Link>
       <div className='w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6'>
         <div className="flex justify-between items-center mt-4">
@@ -56,7 +55,7 @@ const PostPage = ({ params }: { params: { slug: string } }) => {
         <div dangerouslySetInnerHTML={{ __html: marked.parse(post.content) }}></div>
         </div>
       </div>
-    </Layout>
+    </div>
   );
 };
 

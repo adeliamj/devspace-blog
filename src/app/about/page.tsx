@@ -1,13 +1,11 @@
 import Head from 'next/head';
-import Layout from '@/components/Layout'
-
 export const metadata = {
     title: "About DevSpace"
   };
 
   const AboutPage = () => {
     return (
-        <Layout>
+        <div>
             <h1 className='text-5xl border-b-4 pb-5 font-bold'>
                 About
             </h1>
@@ -25,7 +23,7 @@ export const metadata = {
                     </span>
                 </p>
             </div>
-        </Layout>
+        </div>
     )
 }
 export default AboutPage
