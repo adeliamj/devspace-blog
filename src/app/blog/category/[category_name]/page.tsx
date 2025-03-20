@@ -10,7 +10,8 @@ export const generateStaticParams = async () => {
 };
 
 const CategoryBlogPage = async ({ params }: { params: { category_name: string } }) => {
-  const { category_name } = await params;
+  const { category_name } = params; // Hapus await
+
   const allPosts = await getPosts();
   const posts = allPosts.filter(
     post => post.frontmatter.category.toLowerCase() === category_name
