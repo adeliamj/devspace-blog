@@ -5,15 +5,11 @@ import matter from "gray-matter";
 import { marked } from "marked";
 import CategoryLabel from "@/components/CategoryLabel";
 
-interface PostPageProps {
-  params: { slug: string };
-}
-
 export const metadata = {
   title: "Blog DevSpace",
 };
 
-const getPostContent = (slug: string) => {
+const getPostContent = async (slug) => {
   const postsDirectory = path.join(process.cwd(), "src", "posts");
   const filePath = path.join(postsDirectory, `${slug}.md`);
 
@@ -21,14 +17,15 @@ const getPostContent = (slug: string) => {
     return null;
   }
 
-  const markdownWithMeta = fs.readFileSync(filePath, "utf-8");
+  const markdownWithMeta = await fs.promises.readFile(filePath, "utf-8");
   const { data: frontmatter, content } = matter(markdownWithMeta);
 
   return { frontmatter, content };
 };
 
-const PostPage = ({ params }: PostPageProps) => {
-  const post = getPostContent(params.slug);
+const PostPage = async ({ params }) => {
+  const { slug } = await params;
+  const post = await getPostContent(slug);
 
   if (!post) {
     return (
