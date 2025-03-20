@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Head from 'next/head'
 import Header from "@components/Header"
 import Search from "@/components/Search"
 import "@/styles/globals.css";
@@ -16,12 +17,12 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <head>
+      <Head>
         <meta name="keywords" content={Array.isArray(metadata.keywords) ? metadata.keywords.join(', ') : metadata.keywords || ''} />
         <meta name="description" content={metadata.description || ''} />
         <title>{String(metadata.title) || 'Default Title'}</title>
         <link rel="icon" href="/images/logo.png" />
-      </head>
+      </Head>
       <body className='container mx-auto my-7'>
         <Header />
         <Search />

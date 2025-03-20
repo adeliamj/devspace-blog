@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import Layout from '@/components/Layout'
 
 export const metadata = {
   title: "Page Not Found"
@@ -9,7 +8,6 @@ export const metadata = {
 const NotFoundPage = () => {
 
   return (
-    <Layout>
       <div className="flex flex-col items-center mt-20">
         <Image
           src='/images/logo.png'
@@ -28,7 +26,6 @@ const NotFoundPage = () => {
         </h2>
 
       </div>
-    </Layout>
   )
 }
 
