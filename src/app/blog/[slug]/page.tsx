@@ -1,12 +1,16 @@
-import fs from 'fs';
-import path from 'path';
-import Link from 'next/link';
-import matter from 'gray-matter';
-import { marked } from 'marked';
+import fs from "fs";
+import path from "path";
+import Link from "next/link";
+import matter from "gray-matter";
+import { marked } from "marked";
 import CategoryLabel from "@/components/CategoryLabel";
 
+interface PostPageProps {
+  params: { slug: string };
+}
+
 export const metadata = {
-  title: "Blog DevSpace"
+  title: "Blog DevSpace",
 };
 
 const getPostContent = (slug: string) => {
@@ -17,42 +21,51 @@ const getPostContent = (slug: string) => {
     return null;
   }
 
-  const markdownWithMeta = fs.readFileSync(filePath, 'utf-8');
+  const markdownWithMeta = fs.readFileSync(filePath, "utf-8");
   const { data: frontmatter, content } = matter(markdownWithMeta);
 
   return { frontmatter, content };
 };
 
-const PostPage = ({ params }: { params: { slug: string } }) => {
+const PostPage = ({ params }: PostPageProps) => {
   const post = getPostContent(params.slug);
 
   if (!post) {
     return (
       <div>
         <h1>Post not found</h1>
+        <Link href="/blog">Go Back</Link>
       </div>
     );
   }
 
   return (
     <div>
-      <Link href='/blog'>Go Back</Link>
-      <div className='w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6'>
+      <Link href="/blog">Go Back</Link>
+      <div className="w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6">
         <div className="flex justify-between items-center mt-4">
           <h1 className="text-5xl mb-7">{post.frontmatter.title}</h1>
           <CategoryLabel>{post.frontmatter.category}</CategoryLabel>
         </div>
-        <img src={post.frontmatter.cover_image} alt='' className='w-full rounded' />
+        <img
+          src={post.frontmatter.cover_image}
+          alt={post.frontmatter.title}
+          className="w-full rounded"
+        />
 
         <div className="flex justify-between items-center bg-gray-100 p-2 my-8">
-          <div className='flex items-center'>
-            <img src={post.frontmatter.author_image} alt='' className='mx-4 w-10 h-10 object-cover rounded-full hidden sm:block' />
+          <div className="flex items-center">
+            <img
+              src={post.frontmatter.author_image}
+              alt={post.frontmatter.author}
+              className="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block"
+            />
             <h4>{post.frontmatter.author}</h4>
           </div>
-         <div className='mr-4'>{post.frontmatter.date}</div>
+          <div className="mr-4">{post.frontmatter.date}</div>
         </div>
         <div className="blog-text mt-2">
-        <div dangerouslySetInnerHTML={{ __html: marked.parse(post.content) }}></div>
+          <div dangerouslySetInnerHTML={{ __html: marked.parse(post.content) }}></div>
         </div>
       </div>
     </div>
