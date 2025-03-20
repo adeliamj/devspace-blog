@@ -9,7 +9,7 @@ export const metadata = {
   title: "Blog DevSpace",
 };
 
-const getPostContent = async (slug) => {
+const getPostContent = async (slug: string) => {
   const postsDirectory = path.join(process.cwd(), "src", "posts");
   const filePath = path.join(postsDirectory, `${slug}.md`);
 
@@ -23,8 +23,23 @@ const getPostContent = async (slug) => {
   return { frontmatter, content };
 };
 
-const PostPage = async ({ params }) => {
-  const { slug } = await params;
+interface PostPageProps {
+  params: Promise<{ slug: string }>; 
+}
+
+const PostPage = async ({ params }: PostPageProps) => {
+  const resolvedParams = await params;
+  const { slug } = resolvedParams;
+
+  if (!slug) {
+    return (
+      <div>
+        <h1>Invalid Post</h1>
+        <Link href="/blog">Go Back</Link>
+      </div>
+    );
+  }
+
   const post = await getPostContent(slug);
 
   if (!post) {

@@ -6,8 +6,16 @@ import CategoryList from "@/components/CategoryList";
 import { POSTS_PER_PAGE } from "@/config/page";
 import { getPosts } from "@/lib/posts";
 
-const BlogPage = async ({ params }: { params: { page_index?: string } }) => {
-  const page = parseInt(params?.page_index ?? "1", 10);
+export const generateStaticParams = async () => {
+  return [{ page_index: "1" }, { page_index: "2" }]; 
+};
+
+const BlogPage = async ({ params }: { params: Promise<{ page_index?: string }> }) => {
+  const resolvedParams = await params; 
+  console.log("Resolved Blog Page Params:", resolvedParams);
+
+  const page = parseInt(resolvedParams.page_index ?? "1", 10);
+
   const allPosts = await getPosts();
 
   const uniqueCategories = [...new Set(allPosts.map(post => post.frontmatter.category))];

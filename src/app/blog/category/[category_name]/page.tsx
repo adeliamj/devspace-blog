@@ -1,9 +1,8 @@
-import { notFound } from 'next/navigation';
 import Post from '@/components/Post';
 import CategoryList from '@/components/CategoryList';
 import { getPosts } from '@/lib/posts';
+import { notFound } from 'next/navigation'; 
 
-// Generate Static Params
 export const generateStaticParams = async () => {
   const posts = await getPosts();
   const uniqueCategories = [...new Set(posts.map(post => post.frontmatter.category.toLowerCase()))];
@@ -11,20 +10,25 @@ export const generateStaticParams = async () => {
   return uniqueCategories.map(category => ({ category_name: category }));
 };
 
-// Halaman kategori blog harus `async`
-const CategoryBlogPage = async ({ params }: { params?: { category_name?: string } }) => {
-  if (!params?.category_name) {
+const CategoryBlogPage = async ({ params }: { params: Promise<{ category_name: string }> }) => {
+  const resolvedParams = await params;
+
+  if (!resolvedParams || !resolvedParams.category_name) {
     return notFound();
   }
 
-  const category_name = decodeURIComponent(params.category_name).toLowerCase();
+  let category_name = '';
+  try {
+    category_name = decodeURIComponent(resolvedParams.category_name).toLowerCase();
+  } catch (error) {
+    console.error('Error decoding category_name:', error);
+    return notFound();
+  }
 
-  // Pastikan `getPosts()` di-`await`
   const allPosts = await getPosts();
-
-  // Filter postingan berdasarkan kategori
-  const posts = allPosts.filter(post => post.frontmatter.category.toLowerCase() === category_name);
-  const uniqueCategories = [...new Set(allPosts.map(post => post.frontmatter.category))];
+  const posts = allPosts.filter(
+    post => post.frontmatter.category.toLowerCase() === category_name
+  );
 
   if (posts.length === 0) {
     return notFound();
@@ -42,7 +46,7 @@ const CategoryBlogPage = async ({ params }: { params?: { category_name?: string 
           </div>
         </div>
         <div className="w-1/4">
-          <CategoryList categories={uniqueCategories} />
+          <CategoryList categories={[...new Set(allPosts.map(post => post.frontmatter.category))]} />
         </div>
       </div>
     </div>
@@ -50,3 +54,4 @@ const CategoryBlogPage = async ({ params }: { params?: { category_name?: string 
 };
 
 export default CategoryBlogPage;
+
