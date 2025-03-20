@@ -41,7 +41,8 @@
       ],
       "@lib/*": [
         "src/lib/*"
-      ]
+      ],
+      "@posts/*": ["src/posts/*"]
     }
   },
   "include": [

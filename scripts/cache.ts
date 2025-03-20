@@ -1,6 +1,9 @@
 import fs from 'fs/promises';
 import path from 'path';
+import matter from 'gray-matter'; // To parse the frontmatter from markdown files
 
+// Lokasi folder posts
+const POSTS_DIR = path.join(process.cwd(), 'src', 'posts');
 const CACHE_DIR = path.join(process.cwd(), 'cache');
 
 // Membuat direktori cache jika belum ada
@@ -17,7 +20,7 @@ const cacheFile = async (filename: string, data: any): Promise<void> => {
     try {
         await ensureCacheDir(); // Pastikan direktori cache ada
         const filePath = path.join(CACHE_DIR, filename);
-        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
+        await fs.writeFile(filePath, data, 'utf-8');
         console.log(`Cached file: ${filePath}`);
     } catch (err) {
         handleError(err);
@@ -28,17 +31,10 @@ const cacheFile = async (filename: string, data: any): Promise<void> => {
 const readCache = async (filename: string): Promise<any | null> => {
     try {
         const filePath = path.join(CACHE_DIR, filename);
-        try {
-            const data = await fs.readFile(filePath, 'utf-8');
-            return JSON.parse(data);
-        } catch (err) {
-            // Menangani jika file ada tapi gagal dibaca
-            console.error(`Failed to read file: ${filePath}`, err);
-            return null;
-        }
+        const data = await fs.readFile(filePath, 'utf-8');
+        return JSON.parse(data);
     } catch (err) {
-        // Menangani jika file tidak ada atau error lainnya
-        handleError(err);
+        console.error(`Failed to read file: ${filename}`, err);
         return null;
     }
 };
@@ -52,11 +48,47 @@ const handleError = (err: unknown): void => {
     }
 };
 
-// Menyimpan data ke cache/data.js
+// Membaca semua file dalam folder posts dan mengembalikan data terstruktur
+const getPostsData = async (): Promise<any[]> => {
+    try {
+        // Membaca semua file dalam folder posts
+        const files = await fs.readdir(POSTS_DIR);
+
+        // Mengambil isi dari setiap file dan parse menggunakan gray-matter
+        const posts = await Promise.all(
+            files.map(async (file) => {
+                const filePath = path.join(POSTS_DIR, file);
+                const fileContent = await fs.readFile(filePath, 'utf-8');
+                const { data } = matter(fileContent); // Parsing frontmatter using gray-matter
+
+                return {
+                    slug: file.replace('.md', ''), // Assuming all files are .md
+                    frontmatter: data
+                };
+            })
+        );
+
+        return posts; // Mengembalikan array data post
+    } catch (err) {
+        console.error("Error reading posts:", err);
+        throw err;
+    }
+};
+
+// Menyimpan semua data dari folder posts ke dalam cache/data.js
 const generateData = async (): Promise<void> => {
-    const data = { key: 'value' }; // Sesuaikan data yang ingin kamu simpan
-    await cacheFile('data.js', data);
-    console.log('Data successfully cached to data.js');
+    try {
+        const data = await getPostsData(); // Mengambil semua data dari file posts
+
+        // Format the output with export const posts = []
+        const postsExport = `export const posts = ${JSON.stringify(data)};`;
+
+        // Menyimpan data ke dalam cache/data.js dengan format export
+        await cacheFile('data.js', postsExport); 
+        console.log('Data successfully cached to data.js');
+    } catch (err) {
+        handleError(err);
+    }
 };
 
 // Panggil fungsi generateData untuk memastikan file cache/data.js dibuat
