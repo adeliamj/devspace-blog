@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cahce-posts": "ts-node scripts/cache.ts"
+    "cache-posts": "ts-node ./scripts/cache.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
@@ -25,7 +26,9 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
+    "husky": "^9.1.7",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2"
   }
 }

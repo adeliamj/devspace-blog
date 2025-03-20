@@ -1,0 +1,2 @@
+#!/bin/sh
+npm run cache-posts && git add cache/data.js
