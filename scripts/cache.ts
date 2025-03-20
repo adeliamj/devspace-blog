@@ -52,4 +52,14 @@ const handleError = (err: unknown): void => {
     }
 };
 
+// Menyimpan data ke cache/data.js
+const generateData = async (): Promise<void> => {
+    const data = { key: 'value' }; // Sesuaikan data yang ingin kamu simpan
+    await cacheFile('data.js', data);
+    console.log('Data successfully cached to data.js');
+};
+
+// Panggil fungsi generateData untuk memastikan file cache/data.js dibuat
+generateData().catch(handleError);
+
 export { cacheFile, readCache };
