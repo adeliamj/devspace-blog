@@ -20,7 +20,7 @@ const cacheFile = async (filename: string, data: any): Promise<void> => {
     try {
         await ensureCacheDir(); // Pastikan direktori cache ada
         const filePath = path.join(CACHE_DIR, filename);
-        await fs.writeFile(filePath, data, 'utf-8');
+        await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf-8');
         console.log(`Cached file: ${filePath}`);
     } catch (err) {
         handleError(err);
@@ -79,12 +79,7 @@ const getPostsData = async (): Promise<any[]> => {
 const generateData = async (): Promise<void> => {
     try {
         const data = await getPostsData(); // Mengambil semua data dari file posts
-
-        // Format the output with export const posts = []
-        const postsExport = `export const posts = ${JSON.stringify(data)};`;
-
-        // Menyimpan data ke dalam cache/data.js dengan format export
-        await cacheFile('data.js', postsExport); 
+        await cacheFile('data.js', data); // Menyimpan data ke dalam cache/data.js
         console.log('Data successfully cached to data.js');
     } catch (err) {
         handleError(err);
