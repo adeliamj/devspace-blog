@@ -1,20 +1,33 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import CategoryLabel from '@/components/CategoryLabel'
+import Link from 'next/link';
+import Image from 'next/image';
+import CategoryLabel from '@/components/CategoryLabel';
 
-const Post = ({ post }) => {
+interface PostProps {
+    post: {
+        slug: string;
+        frontmatter: { [key: string]: any };
+    };
+    compact: boolean;
+}
+
+const Post: React.FC<PostProps> = ({ post, compact }) => {
     const coverImage = post.frontmatter?.cover_image;
 
     return (
         <div className='w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6'>
+
+            {/* Image Handling */}
             {coverImage && coverImage !== "" ? (
-                <Image
-                    src={coverImage}
-                    alt={post.frontmatter?.title || 'Post Image'}
-                    height={420}
-                    width={600}
-                    className='mb-4 rounded'
-                />
+                !compact ? (
+                    <Image
+                        src={coverImage}
+                        alt={post.frontmatter?.title || 'Post Image'}
+                        height={420}
+                        width={600}
+                        className='mb-4 rounded'
+                        priority
+                    />
+                ) : null
             ) : (
                 <div className='w-full h-64 bg-gray-200 flex items-center justify-center'>
                     <span>No Image Available</span>
@@ -25,7 +38,9 @@ const Post = ({ post }) => {
                 <span className="font-light text-gray-600">
                     {post.frontmatter?.date}
                 </span>
-                <CategoryLabel>{post.frontmatter.category}</CategoryLabel>
+                {post.frontmatter?.category && (
+                    <CategoryLabel>{post.frontmatter.category}</CategoryLabel>
+                )}
             </div>
 
             <div className='mt-2'>
@@ -36,21 +51,34 @@ const Post = ({ post }) => {
                     {post.frontmatter.excerpt}
                 </p>
             </div>
-            <div className='flex justify-between items-center mt-6'>
-                <Link href={`/blog/${post.slug}`} className='text-gray-900 hover:text-blue-600'>Read More
-                </Link>
-                <div className='flex items-center'>
-                    <img
-                        src={post.frontmatter.author_image}
-                        alt=''
-                        className='mx-4 w-10 h-10 object-cover rounded-full hidden sm:block'
-                    />
-                    <h3 className='text-gray-700 font-bold'>
-                        {post.frontmatter.author}
-                    </h3>
-                </div>
-            </div>
+
+            {/* Content Display */}
+            {!compact && (
+                <>
+                    <div className='flex justify-between items-center mt-6'>
+                        <Link href={`/blog/${post.slug}`} className='text-gray-900 hover:text-blue-600'>
+                            Read More
+                        </Link>
+                        <div className='flex items-center'>
+                            {post.frontmatter?.author_image && (
+                                <Image
+                                    src={post.frontmatter.author_image}
+                                    alt={post.frontmatter?.author || "Author"}
+                                    width={40}
+                                    height={40}
+                                    className='mx-4 w-10 h-10 object-cover rounded-full hidden sm:block'
+                                    unoptimized
+                                />
+                            )}
+                            <h3 className='text-gray-700 font-bold'>
+                                {post.frontmatter?.author}
+                            </h3>
+                        </div>
+                    </div>
+                </>
+            )}
         </div>
     );
-}
+};
+
 export default Post;

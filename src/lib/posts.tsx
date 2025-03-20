@@ -1,0 +1,29 @@
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+import { sortByDate } from "@/utils/page";
+
+const postsDirectory = path.join(process.cwd(), "src", "posts");
+const files = fs.readdirSync(postsDirectory);
+
+const getPosts = () => {
+    const posts = files.map((filename) => {
+        const slug = filename.replace(".md", "");
+
+        const markdownWithMeta = fs.readFileSync(
+            path.join(postsDirectory, filename),
+            "utf-8"
+        );
+
+        const { data: frontmatter } = matter(markdownWithMeta);
+
+        return {
+            slug,
+            frontmatter,
+        };
+    });
+
+    return posts.sort(sortByDate);
+};
+
+export { getPosts };
