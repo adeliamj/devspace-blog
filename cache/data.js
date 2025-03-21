@@ -12,9 +12,9 @@ export const posts = [
     "slug": "manage-react-state-with-xstate",
     "frontmatter": {
       "title": "Manage React State With XState",
-      "date": "May 15, 2021",
+      "date": "May 15, 2025",
       "tags": [],
-      "lastModified": "2025-03-21T01:41:19.089Z"
+      "lastModified": "2025-03-21T01:46:21.500Z"
     }
   },
   {
