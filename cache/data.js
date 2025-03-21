@@ -9,12 +9,12 @@ export const posts = [
     }
   },
   {
-    "slug": "javascript-performance-tips",
+    "slug": "manage-react-state-with-xstate",
     "frontmatter": {
-      "title": "JavaScript Performance Tips",
-      "date": "May 4, 2021",
+      "title": "Manage React State With XState",
+      "date": "May 15, 2021",
       "tags": [],
-      "lastModified": "2021-05-12T17:28:44.000Z"
+      "lastModified": "2025-03-21T01:41:19.089Z"
     }
   },
   {
