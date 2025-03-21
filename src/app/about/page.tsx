@@ -1,3 +1,4 @@
+// Menentukan metadata untuk halaman, digunakan dalam Next.js untuk memberikan informasi seperti title halaman
 export const metadata = {
     title: "About DevSpace"
   };

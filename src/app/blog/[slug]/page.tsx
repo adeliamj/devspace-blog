@@ -1,36 +1,44 @@
-import fs from "fs";
-import path from "path";
-import Link from "next/link";
-import matter from "gray-matter";
-import { marked } from "marked";
-import CategoryLabel from "@/components/CategoryLabel";
+import fs from "fs"; // Modul untuk membaca file sistem
+import path from "path"; // Modul untuk menangani path secara cross-platform
+import Link from "next/link"; // Modul Next.js untuk navigasi antar halaman
+import matter from "gray-matter"; // Untuk parsing metadata (frontmatter) dari file Markdown
+import { marked } from "marked"; // Untuk mengonversi Markdown menjadi HTML
+import CategoryLabel from "@/components/CategoryLabel"; // Komponen untuk menampilkan label kategori
 
+// Metadata halaman
 export const metadata = {
   title: "Blog DevSpace",
 };
 
+// Fungsi untuk mengambil konten dari file Markdown berdasarkan slug
 const getPostContent = async (slug: string) => {
-  const postsDirectory = path.join(process.cwd(), "src", "posts");
-  const filePath = path.join(postsDirectory, `${slug}.md`);
+  const postsDirectory = path.join(process.cwd(), "src", "posts"); // Menentukan lokasi direktori posts
+  const filePath = path.join(postsDirectory, `${slug}.md`);  // Path file berdasarkan slug
 
+  // Mengecek apakah file ada
   if (!fs.existsSync(filePath)) {
-    return null;
+    return null; // Jika tidak ada, kembalikan null
   }
 
+  // Membaca isi file Markdown
   const markdownWithMeta = await fs.promises.readFile(filePath, "utf-8");
+  // Parsing frontmatter (metadata) dan konten dari Markdown
   const { data: frontmatter, content } = matter(markdownWithMeta);
 
   return { frontmatter, content };
 };
 
+// Interface untuk properti komponen PostPage
 interface PostPageProps {
-  params: Promise<{ slug: string }>; 
+  params: Promise<{ slug: string }>; // Properti params berupa promise yang berisi slug
 }
 
+// Komponen halaman blog berdasarkan slug
 const PostPage = async ({ params }: PostPageProps) => {
-  const resolvedParams = await params;
-  const { slug } = resolvedParams;
+  const resolvedParams = await params;  // Menunggu params selesai diproses
+  const { slug } = resolvedParams; // Mengambil slug dari params
 
+  // Jika slug tidak valid, tampilkan pesan error
   if (!slug) {
     return (
       <div>
@@ -40,7 +48,7 @@ const PostPage = async ({ params }: PostPageProps) => {
     );
   }
 
-  const post = await getPostContent(slug);
+  const post = await getPostContent(slug); // Mengambil data post berdasarkan slug
 
   if (!post) {
     return (

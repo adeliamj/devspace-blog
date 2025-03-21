@@ -1,7 +1,8 @@
 import Link from 'next/link';
 
+// Komponen CategoryList menerima props `categories`, yang berupa array string atau undefined
 const CategoryList = ({ categories }: { categories: (string | undefined)[] }) => {
-  // Ensure categories are valid strings before rendering
+   // Memfilter kategori agar hanya mengambil string yang valid (bukan undefined atau string kosong)
   const validCategories = categories.filter(
     (category): category is string => typeof category === 'string' && category.trim() !== ''
   );

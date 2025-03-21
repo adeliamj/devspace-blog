@@ -1,12 +1,15 @@
 import Link from 'next/link'
-import { ReactNode } from 'react';
+import { ReactNode } from 'react'; // Mengimpor ReactNode untuk mendefinisikan tipe properti yang bisa menerima elemen React
 
+// Mendefinisikan tipe props untuk komponen
 type CategoryLabelProps = {
-    children: ReactNode;
+    children: ReactNode; // Props children bisa berupa teks atau elemen React
 };
 
+// Komponen CategoryLabel untuk menampilkan label kategori dengan warna tertentu
 const CategoryLabel = ({ children }: CategoryLabelProps) => {
     const colorKey: Record<string, string> = {
+         // Objek yang berisi mapping kategori ke warna tertentu
         JavaScript: 'yellow',
         CSS: 'blue',
         Python: 'green',
@@ -14,6 +17,7 @@ const CategoryLabel = ({ children }: CategoryLabelProps) => {
         Ruby: 'red'
     }
 
+    // Menentukan warna berdasarkan kategori yang diberikan dalam children
     const color = colorKey[children as keyof typeof colorKey] || 'gray';
 
     return (

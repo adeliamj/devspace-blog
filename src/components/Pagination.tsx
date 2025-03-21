@@ -1,17 +1,17 @@
 import Link from 'next/link';
 
 interface PaginationProps {
-    currentPage: number;
-    numPages: number;
+    currentPage: number; // Halaman saat ini
+    numPages: number; // Jumlah total halaman
 }
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, numPages }) => {
-    const isFirst = currentPage === 1;
-    const isLast = currentPage === numPages;
-    const prevPage = `/blog/page/${currentPage - 1}`;
-    const nextPage = `/blog/page/${currentPage + 1}`;
+    const isFirst = currentPage === 1; // Cek apakah halaman saat ini adalah yang pertama
+    const isLast = currentPage === numPages; // Cek apakah halaman saat ini adalah yang terakhir
+    const prevPage = `/blog/page/${currentPage - 1}`;  // URL halaman sebelumnya
+    const nextPage = `/blog/page/${currentPage + 1}`; // URL halaman berikutnya
 
-    if (numPages === 1) return null;
+    if (numPages === 1) return null; // Jika hanya ada satu halaman, tidak perlu pagination
 
     return (
         <div className="mt-6">

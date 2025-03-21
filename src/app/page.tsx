@@ -1,13 +1,15 @@
 import Link from "next/link";
 import Post from "@/components/Post";
+// Mengimpor fungsi getPosts dari library posts, tetapi mengganti nama menjadi fetchPosts 
 import { getPosts as fetchPosts } from "@/lib/posts";
 
+// Fungsi untuk mengambil daftar postingan terbaru
 const getPosts = async () => {
-  return fetchPosts().slice(0, 6);
+  return fetchPosts().slice(0, 6); // Mengambil hanya 6 postingan terbaru
 };
 
 const HomePage = async () => {
-  const posts = await getPosts();
+  const posts = await getPosts(); // Mengambil data postingan
 
   return (
     <div>

@@ -3,6 +3,7 @@ import Header from "@components/Header"
 import Search from "@/components/Search"
 import "@/styles/globals.css";
 
+// Metadata
 export const metadata: Metadata = {
   title: "Welcome to DevSpace",
   keywords: "development, coding, programming",

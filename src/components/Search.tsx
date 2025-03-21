@@ -1,25 +1,29 @@
-"use client";
+"use client"; // Menggunakan "use client" untuk memastikan komponen ini berjalan di sisi klien
 
 import { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 import SearchResults from '@/components/SearchResults';
 
 const Search: React.FC = () => {
+    // State untuk menyimpan kata kunci pencarian yang diinputkan oleh pengguna
   const [searchTerm, setSearchTerm] = useState<string>('');
+  // State untuk menyimpan hasil pencarian dari API
   const [searchResult, setSearchResult] = useState<{ slug: string; frontmatter: { title: string; excerpt: string } }[]>([]);
 
+    // useEffect untuk menangani pencarian saat searchTerm berubah
   useEffect(() => {
       const getResults = async () => {
           if (searchTerm === '') {
-              setSearchResult([]);
+              setSearchResult([]); // Jika input kosong, reset hasil pencarian
           } else {
-              const res = await fetch(`/api/search?q=${searchTerm}`);
+              // Melakukan fetch ke endpoint pencarian dengan query searchTerm
+              const res = await fetch(`/api/search?q=${searchTerm}`); 
               const { results } = await res.json();
-              setSearchResult(results);
+              setSearchResult(results); // Menyimpan hasil pencarian ke dalam state
           }
       };
       getResults();
-  }, [searchTerm]);
+  }, [searchTerm]); // useEffect akan berjalan setiap kali searchTerm berubah
 
   return (
     <div className='relative bg-gray-600 p-4'>

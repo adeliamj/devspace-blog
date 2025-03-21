@@ -1,10 +1,12 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
+// Metadata halaman
 export const metadata = {
   title: "Page Not Found"
 };
 
+// Komponen NotFoundPage yang ditampilkan ketika halaman tidak dite
 const NotFoundPage = () => {
 
   return (

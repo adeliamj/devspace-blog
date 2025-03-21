@@ -3,10 +3,11 @@ import Image from 'next/image';
 import "@/styles/globals.css";
 
 interface HeaderProps {
-    children: React.ReactNode;
-    className?: string;
+    children: React.ReactNode; // Header dapat menerima elemen anak (children)
+    className?: string; // Opsional: Kelas tambahan untuk styling
 }
 
+// Komponen Header yang fleksibel dengan props children dan className
 function Header({ children, className }: HeaderProps) {
     return (
         <header className={className}>

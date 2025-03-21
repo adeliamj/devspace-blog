@@ -1,5 +1,6 @@
 import Post from '@/components/Post'
 
+// Mendefinisikan tipe data untuk props yang diterima oleh komponen SearchResults
 interface SearchResultsProps {
   results: {
     slug: string;
@@ -7,7 +8,9 @@ interface SearchResultsProps {
   }[];
 }
 
+// Komponen SearchResults untuk menampilkan hasil pencarian
 export default function SearchResults({ results }: SearchResultsProps) {
+    // Jika tidak ada hasil pencarian, kembalikan elemen kosong
   if (results.length === 0) return <></>;
 
   return (

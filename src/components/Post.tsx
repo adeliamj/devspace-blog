@@ -2,16 +2,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import CategoryLabel from '@/components/CategoryLabel';
 
+// Definisi tipe data untuk properti komponen Post
 interface PostProps {
     post: {
-        slug: string;
-        frontmatter: { [key: string]: any };
+        slug: string; // Slug untuk URL postingan
+        frontmatter: { [key: string]: any };  // Metadata
     };
-    compact: boolean;
+    compact: boolean; // Menentukan apakah tampilan akan lebih ringkas
 }
 
+// Komponen Post yang menampilkan informasi tentang sebuah postingan blog
 const Post: React.FC<PostProps> = ({ post, compact }) => {
-    const coverImage = post.frontmatter?.cover_image;
+    const coverImage = post.frontmatter?.cover_image;  // Mengambil URL gambar cover dari frontmatter
 
     return (
         <div className='w-full px-10 py-6 bg-white rounded-lg shadow-md mt-6'>
