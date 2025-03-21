@@ -1,14 +1,23 @@
 import Post from '@/components/Post';
 import CategoryList from '@/components/CategoryList';
 import { getPosts } from '@/lib/posts';
-import { notFound } from 'next/navigation'; 
+import { notFound } from 'next/navigation';
 
 export const generateStaticParams = async () => {
   const posts = await getPosts();
-  const uniqueCategories = [...new Set(posts.map(post => post.frontmatter.category.toLowerCase()))];
+
+  // Ensure category is defined before using toLowerCase()
+  const uniqueCategories = [
+    ...new Set(
+      posts
+        .map(post => post.frontmatter.category?.toLowerCase())
+        .filter(category => category) // Remove undefined values
+    )
+  ];
 
   return uniqueCategories.map(category => ({ category_name: category }));
 };
+
 
 const CategoryBlogPage = async ({ params }: { params: Promise<{ category_name: string }> }) => {
   const resolvedParams = await params;
@@ -27,7 +36,7 @@ const CategoryBlogPage = async ({ params }: { params: Promise<{ category_name: s
 
   const allPosts = await getPosts();
   const posts = allPosts.filter(
-    post => post.frontmatter.category.toLowerCase() === category_name
+    post => post.frontmatter.category && post.frontmatter.category.toLowerCase() === category_name
   );
 
   if (posts.length === 0) {
